@@ -1,0 +1,12 @@
+{
+  "name": "catatan-cornell",
+  "version": "1.0.0",
+  "description": "Aplikasi catatan dengan metode Cornell",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^43.2.0"
+  }
+}

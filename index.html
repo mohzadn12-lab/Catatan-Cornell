@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catatan Cornell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c2b24;
+    --ink-soft: #2c4a41;
+    --paper: #f6f2e8;
+    --paper-line: #d9d0bb;
+    --gold: #9c7a3c;
+    --gold-soft: #c9a96b;
+    --red-margin: #8a3b34;
+    --shadow: rgba(28, 43, 36, 0.18);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(156,122,60,0.08), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(156,122,60,0.06), transparent 45%);
+    font-family: 'Source Serif 4', serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  .shell {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  header.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid var(--gold-soft);
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+  }
+
+  header.top h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: var(--paper);
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+
+  header.top .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  header.top .count {
+    font-family: 'IBM Plex Mono', monospace;
+    color: rgba(246,242,232,0.6);
+    font-size: 0.85rem;
+    text-align: right;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 28px;
+  }
+
+  @media (max-width: 780px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  .composer {
+    background: var(--paper);
+    border-radius: 3px;
+    padding: 28px 26px 24px;
+    box-shadow: 0 18px 40px var(--shadow);
+    position: sticky;
+    top: 24px;
+    align-self: start;
+  }
+
+  .composer h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+
+  .composer .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 16px 0 6px;
+  }
+
+  label:first-of-type { margin-top: 0; }
+
+  input[type="text"], textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--paper-line);
+    background: transparent;
+    font-family: 'Source Serif 4', serif;
+    font-size: 1rem;
+    color: var(--ink);
+    padding: 6px 2px;
+    resize: vertical;
+    font-weight: 400;
+  }
+
+  textarea { min-height: 70px; line-height: 1.55; }
+  input:focus, textarea:focus {
+    outline: none;
+    border-bottom-color: var(--gold);
+  }
+
+  .composer-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  button {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+  }
+  button:active { transform: scale(0.97); }
+
+  .btn-primary { background: var(--ink); color: var(--paper); flex: 1; }
+  .btn-primary:hover { background: var(--ink-soft); }
+  .btn-ghost { background: transparent; color: var(--ink-soft); border: 1.5px solid var(--paper-line); }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .search-row {
+    margin-bottom: 20px;
+  }
+  .search-row input {
+    width: 100%;
+    background: rgba(246,242,232,0.08);
+    border: 1.5px solid rgba(246,242,232,0.18);
+    border-radius: 3px;
+    padding: 10px 14px;
+    color: var(--paper);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+  }
+  .search-row input::placeholder { color: rgba(246,242,232,0.4); }
+  .search-row input:focus { outline: none; border-color: var(--gold-soft); }
+
+  .notes-list { display: flex; flex-direction: column; gap: 18px; }
+
+  .note-card {
+    background: var(--paper);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 10px 26px var(--shadow);
+    display: grid;
+    grid-template-columns: 34% 66%;
+    position: relative;
+  }
+
+  .note-card::before {
+    content: "";
+    position: absolute;
+    left: 34%;
+    top: 0;
+    bottom: 0;
+    width: 1.5px;
+    background: var(--red-margin);
+    opacity: 0.5;
+  }
+
+  .note-card .cue-col {
+    padding: 20px 18px;
+    border-right: none;
+  }
+  .note-card .cue-col .label-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red-margin);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .note-card .cue-col .cue-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--ink);
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+
+  .note-card .notes-col { padding: 20px 22px; }
+  .note-card .notes-col .label-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .note-card .notes-col .note-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .note-card .notes-col .note-body {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .summary-row {
+    grid-column: 1 / -1;
+    border-top: 1.5px dashed var(--paper-line);
+    padding: 14px 22px 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .summary-row .label-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  .summary-row .summary-text {
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    font-size: 0.9rem;
+  }
+
+  .card-meta {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 22px;
+    background: rgba(28,43,36,0.03);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(28,43,36,0.55);
+  }
+  .card-meta .actions { display: flex; gap: 14px; }
+  .card-meta button.link {
+    background: none;
+    border: none;
+    padding: 8px 2px;
+    margin: -8px 0;
+    text-transform: none;
+    letter-spacing: normal;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    font-size: 0.78rem;
+  }
+  .card-meta button.link:hover { color: var(--red-margin); }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(246,242,232,0.55);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    border: 1.5px dashed rgba(246,242,232,0.2);
+    border-radius: 4px;
+  }
+
+  .status-msg {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold-soft);
+    margin-top: 10px;
+    min-height: 16px;
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <header class="top">
+      <div>
+        <span class="eyebrow">Metode Cornell — Cue · Catatan · Ringkasan</span>
+        <h1>Catatan</h1>
+      </div>
+      <div class="count" id="noteCount">0 catatan tersimpan</div>
+    </header>
+
+    <div class="layout">
+      <div class="composer">
+        <h2 id="formTitle">Catatan baru</h2>
+        <span class="sub">Isi ketiga bagian di bawah</span>
+
+        <label>Judul</label>
+        <input type="text" id="titleInput" placeholder="Judul catatan">
+
+        <label>Kata kunci / Pertanyaan (kolom cue)</label>
+        <textarea id="cueInput" placeholder="Kata kunci, istilah, atau pertanyaan pemicu ingatan"></textarea>
+
+        <label>Catatan utama</label>
+        <textarea id="notesInput" placeholder="Isi catatan lengkap di sini" style="min-height:130px;"></textarea>
+
+        <label>Ringkasan</label>
+        <textarea id="summaryInput" placeholder="Ringkas isi halaman ini dengan kata-katamu sendiri" style="min-height:60px;"></textarea>
+
+        <div class="composer-actions">
+          <button class="btn-primary" id="saveBtn">Simpan catatan</button>
+          <button class="btn-ghost" id="cancelBtn" style="display:none;">Batal</button>
+        </div>
+        <div class="status-msg" id="statusMsg"></div>
+      </div>
+
+      <div class="notes-panel">
+        <div class="search-row">
+          <input type="text" id="searchInput" placeholder="Cari judul, cue, isi, atau ringkasan...">
+        </div>
+        <div class="notes-list" id="notesList"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const STORAGE_KEY = 'cornell-notes';
+let notes = [];
+let editingId = null;
+
+const notesList = document.getElementById('notesList');
+const noteCount = document.getElementById('noteCount');
+const statusMsg = document.getElementById('statusMsg');
+const searchInput = document.getElementById('searchInput');
+const formTitle = document.getElementById('formTitle');
+const cancelBtn = document.getElementById('cancelBtn');
+
+const titleInput = document.getElementById('titleInput');
+const cueInput = document.getElementById('cueInput');
+const notesInput = document.getElementById('notesInput');
+const summaryInput = document.getElementById('summaryInput');
+
+function setStatus(msg) {
+  statusMsg.textContent = msg;
+  if (msg) setTimeout(() => { if (statusMsg.textContent === msg) statusMsg.textContent = ''; }, 2500);
+}
+
+function loadNotes() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    notes = raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    notes = [];
+  }
+  render();
+}
+
+function persistNotes() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  } catch (e) {
+    setStatus('Gagal menyimpan. Coba lagi.');
+  }
+}
+function resetForm() {
+  editingId = null;
+  titleInput.value = '';
+  cueInput.value = '';
+  notesInput.value = '';
+  summaryInput.value = '';
+  formTitle.textContent = 'Catatan baru';
+  cancelBtn.style.display = 'none';
+}
+
+function startEdit(id) {
+  const n = notes.find(x => x.id === id);
+  if (!n) return;
+  editingId = id;
+  titleInput.value = n.title;
+  cueInput.value = n.cue;
+  notesInput.value = n.body;
+  summaryInput.value = n.summary;
+  formTitle.textContent = 'Edit catatan';
+  cancelBtn.style.display = 'inline-block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteNote(id) {
+  notes = notes.filter(n => n.id !== id);
+  persistNotes();
+  render();
+  setStatus('Catatan dihapus');
+}
+
+function saveNote() {
+  const title = titleInput.value.trim();
+  const cue = cueInput.value.trim();
+  const body = notesInput.value.trim();
+  const summary = summaryInput.value.trim();
+
+  if (!title && !body) {
+    setStatus('Isi minimal judul atau catatan utama');
+    return;
+  }
+
+  if (editingId) {
+    const n = notes.find(x => x.id === editingId);
+    n.title = title || '(tanpa judul)';
+    n.cue = cue;
+    n.body = body;
+    n.summary = summary;
+    n.updatedAt = Date.now();
+  } else {
+    notes.unshift({
+      id: 'note_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+      title: title || '(tanpa judul)',
+      cue, body, summary,
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    });
+  }
+
+  persistNotes();
+  resetForm();
+  render();
+  setStatus('Tersimpan');
+}
+
+function formatDate(ts) {
+  return new Date(ts).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function render() {
+  const q = searchInput.value.trim().toLowerCase();
+  const filtered = q
+    ? notes.filter(n =>
+        n.title.toLowerCase().includes(q) ||
+        n.cue.toLowerCase().includes(q) ||
+        n.body.toLowerCase().includes(q) ||
+        n.summary.toLowerCase().includes(q))
+    : notes;
+
+  noteCount.textContent = notes.length + ' catatan tersimpan';
+
+  if (filtered.length === 0) {
+    notesList.innerHTML = '<div class="empty-state">' +
+      (notes.length === 0 ? 'Belum ada catatan. Mulai tulis di panel sebelah kiri.' : 'Tidak ada catatan yang cocok.') +
+      '</div>';
+    return;
+  }
+
+  notesList.innerHTML = filtered.map(n => `
+    <div class="note-card">
+      <div class="cue-col">
+        <span class="label-tag">Cue</span>
+        <div class="cue-text">${escapeHtml(n.cue) || '—'}</div>
+      </div>
+      <div class="notes-col">
+        <span class="label-tag">Catatan</span>
+        <div class="note-title">${escapeHtml(n.title)}</div>
+        <div class="note-body">${escapeHtml(n.body) || '—'}</div>
+      </div>
+      ${n.summary ? `
+      <div class="summary-row">
+        <span class="label-tag">Ringkasan</span>
+        <span class="summary-text">${escapeHtml(n.summary)}</span>
+      </div>` : ''}
+      <div class="card-meta">
+        <span>Diperbarui ${formatDate(n.updatedAt)}</span>
+        <span class="actions">
+          <button class="link" data-edit="${n.id}">Edit</button>
+          <button class="link" data-del="${n.id}">Hapus</button>
+        </span>
+      </div>
+    </div>
+  `).join('');
+
+  notesList.querySelectorAll('[data-edit]').forEach(btn =>
+    btn.addEventListener('click', () => startEdit(btn.dataset.edit)));
+  notesList.querySelectorAll('[data-del]').forEach(btn =>
+    btn.addEventListener('click', () => deleteNote(btn.dataset.del)));
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+document.getElementById('saveBtn').addEventListener('click', saveNote);
+cancelBtn.addEventListener('click', resetForm);
+searchInput.addEventListener('input', render);
+
+loadNotes();
+</script>
+</body>
+</html>
