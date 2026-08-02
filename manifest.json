@@ -5,8 +5,8 @@
   "name": "Catatan",
   "orientation": "any",
   "scope": "/",
-  "short_name": "Caccons",
+  "short_name": "Caccon's",
   "start_url": "/",
-  "theme_color": "#1c2b24",
+  "theme_color": "#ffffff",
   "description": "Aplikasi catatan dengan metode Cornell — cue, catatan, ringkasan"
 }
